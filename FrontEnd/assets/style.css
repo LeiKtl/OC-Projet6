@@ -88,19 +88,33 @@ nav ul {
 	display: flex;
 	align-items: center;
 	list-style-type: none;
-
 }
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
 }
 
-li:hover {
+/** Ajouté pour reduire la taille de l'icône instagram **/
+nav li img {
+	width: 22px;
+	height: 22px;
+}
+
+nav li a {
+	text-decoration: none;
+	color: black;
+}
+
+li:hover,
+li a:hover, /** Ajouté **/
+#logIn a /** Ajouté **/ {
 	color: #B1663C;
+	cursor: pointer; /** Ajouté **/
 }
 #introduction {
 	display: flex;
 	align-items: center;
+	margin: 120px auto; /** Ajouté **/
 }
 #introduction figure {
 	flex: 1
@@ -137,38 +151,50 @@ li:hover {
 	width: 100%;
 
 }
+
+#logIn { /** Ajout des elements de formulaire LogIn**/
+	width: 50%;
+	margin: 150px auto 296px auto;
+}
 #contact {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
-#contact > * {
+#contact > *,
+#logIn {
 	text-align: center;
 
 }
-#contact h2{
+#contact h2,
+#logIn h2 {
 	margin-bottom: 20px;
 }
-#contact form {
+#contact form,
+#logIn form {
 	text-align: left;
 	margin-top:30px;
 	display: flex;
 	flex-direction: column;
 }
-
-#contact input {
+#contact input,
+#logIn input {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-#contact label {
+#contact label,
+#logIn label {
 	margin: 2em 0 1em 0;
 }
 #contact textarea {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-
+#logIn a {
+	color: black;
+	;
+}
 input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
@@ -178,6 +204,7 @@ input[type="submit"]{
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+	cursor: pointer; /** Ajouté **/
 }
 
 footer nav ul {
@@ -186,3 +213,31 @@ footer nav ul {
 	margin: 2em
 }
 
+/** CSS filtres **/
+.filters {
+	display: flex;
+	justify-content: center;
+	margin: 60px auto;
+}
+
+.filtersBtn {
+	border: 1px solid #1D6154;
+	border-radius: 60px;
+	color: #1D6154;
+	text-align: center;
+	font-family: Syne;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+	background-color: white;
+	padding: 6px 8px;
+	margin: 5px;
+}
+
+.filtersBtn:hover,
+.filtersBtn:active {
+	color: white;
+	background-color: #1D6154;
+	cursor: pointer;
+}
