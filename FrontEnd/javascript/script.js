@@ -24,5 +24,28 @@ function mainGallery(){
         console.error("Un problème est survenu lors de la récupération des données:", error);
     });
 };
-
 mainGallery();
+
+
+function categoriesBtn() {
+    fetch("http://localhost:5678/api/categories")
+    .then(data => data.json())
+    .then(categories => {
+        const filters = document.querySelector(".filters");
+        const allBtn = document.createElement("button");
+        allBtn.classList.add("filtersBtn");
+        allBtn.innerText = "Tous";
+        filters.appendChild(allBtn);
+        
+        for (i=0 ; i < categories.length ; i++) {
+            const category = categories[i];
+            const filterBtn = document.createElement("button");
+            filterBtn.classList.add("filtersBtn");
+
+            //filterBtn.setAttribute("id", category.id);//
+            filterBtn.innerText = category.name;
+            filters.appendChild(filterBtn);
+        }
+    });
+};
+categoriesBtn();
