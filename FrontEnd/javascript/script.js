@@ -1,3 +1,28 @@
+//Fonction qui lorsque l'utilisateur est connecté change le bouton "login" en "logout", et lui permet de se deconnecter en cliquant dessus + ajout des éléments du mode édition
+function connected () {
+    const userConnected = localStorage.getItem("token");
+    if (userConnected) {
+        const editionMode = document.querySelector(".editionMode");
+        editionMode.style.display = "flex";
+
+        const editionGallery = document.querySelector(".editionGallery");
+        editionGallery.style.marginBottom = "80px";
+
+        const modifierBtn = document.querySelector(".modifierBtn");
+        modifierBtn.style.display = "block";
+
+        const filters = document.querySelector(".filters");
+        filters.style.display = "none"
+        
+        const btnLog = document.querySelector(".btnLog");
+        btnLog.innerHTML = "logout";
+        btnLog.addEventListener("click", function () {
+            localStorage.removeItem("token");
+        })
+    }
+};
+connected ();
+
 //Création de la fonction qui récupère les travaux de l'architecte
 function mainGallery(){
     fetch("http://localhost:5678/api/works")
