@@ -47,11 +47,14 @@ table {
 	border-spacing: 0;
 }
 /** end reset css**/
+body {
+	font-size: 14px;
+	font-family: 'Work Sans' ;
+}
+
 .mainContainer { /** Changé le body en mainContainer pour le mode edition **/
 	max-width: 1140px;
 	margin:auto;
-	font-family: 'Work Sans' ;
-	font-size: 14px;
 }
 header {
 	display: flex;
@@ -59,7 +62,7 @@ header {
 	margin: 50px 0
 }
 .onThePage{ /** Ajouté **/
-	font-weight: bold;
+	font-weight: 700;
 }
 section {
 	margin: 50px 0
@@ -112,6 +115,7 @@ li a:hover, /** Ajouté **/
 #logIn a:hover /** Ajouté **/ {
 	color: #B1663C;
 	cursor: pointer; /** Ajouté **/
+	font-weight: 700; /** Ajouté **/
 }
 #introduction {
 	display: flex;
@@ -197,13 +201,16 @@ li a:hover, /** Ajouté **/
 	color: black;
 	;
 }
-input[type="submit"]{
+input[type="submit"],
+.addPictureButton /** Ajouté **/{
+	border: none;
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
 	background-color: #1D6154;
 	margin : 2em auto ;
 	width: 180px;
+	height: 36px; /** Ajouté **/
 	text-align: center;
 	border-radius: 60px ;
 	cursor: pointer; /** Ajouté **/
@@ -288,4 +295,63 @@ footer nav ul {
 	right: 33%;
 	top: 6px;
 	display: none;
+}
+
+/** CSS fenêtre modale**/
+.modal {
+	z-index: 1;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.3);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	display: none;
+}
+
+.modalGallery {
+	background-color: white;
+	width: 630px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10px;
+	overflow: auto;
+	position: relative;
+	padding-bottom: 20px;
+}
+
+.fa-arrow-left {
+	position: absolute;
+	left: 30px;
+	top: 30px;
+}
+
+.fa-xmark {
+	position: absolute;
+	right: 30px;
+	top: 30px;
+}
+
+h3 {
+	font-size: 26px;
+	margin-top: 60px;
+}
+
+.miniGallery {
+	margin: 40px auto;
+}
+
+.miniGallery img {
+	width: 78px;
+	height: 104px;
+}
+
+hr {
+	border: solid 1px #b3b3b3;
+	width: 70%;
 }

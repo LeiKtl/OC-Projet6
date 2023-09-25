@@ -1,8 +1,6 @@
 //Fonction qui lorsque l'utilisateur est connecté change le bouton "login" en "logout", et lui permet de se deconnecter en cliquant dessus + ajout des éléments du mode édition
-function connected () {
-    const userConnected = localStorage.getItem("token");
-    if (userConnected) {
-        const editionMode = document.querySelector(".editionMode");
+function editionMode() {
+    const editionMode = document.querySelector(".editionMode");
         editionMode.style.display = "flex";
 
         const editionGallery = document.querySelector(".editionGallery");
@@ -12,16 +10,14 @@ function connected () {
         modifierBtn.style.display = "block";
 
         const filters = document.querySelector(".filters");
-        filters.style.display = "none"
+        filters.style.display = "none";
         
         const btnLog = document.querySelector(".btnLog");
         btnLog.innerHTML = "logout";
         btnLog.addEventListener("click", function () {
             localStorage.removeItem("token");
         })
-    }
-};
-connected ();
+}
 
 //Création de la fonction qui récupère les travaux de l'architecte
 function mainGallery(){
@@ -50,7 +46,6 @@ function mainGallery(){
         console.error("Un problème est survenu lors de la récupération des données:", error);
     });
 };
-mainGallery();
 
 // Création de la fonction pour gérer la galerie selon le bouton categorie selectionné
 function filters() {
@@ -99,4 +94,58 @@ function filters() {
         console.error("Un problème est survenu lors de la récupération des données:", error);
     });
 };
-filters();
+
+function openModal() {
+    const modifierBtn = document.querySelector(".modifierBtn");
+    modifierBtn.addEventListener("click", function () {
+        modalWorks ();
+    });
+};
+
+function modalWorks() {
+    const modal = document.querySelector(".modal");
+    modal.style.display = "flex";
+
+    const modalGallery = document.createElement("div");
+    modalGallery.classList.add("modalGallery");
+    modal.appendChild(modalGallery);
+
+    const arrowLeft = document.createElement("i");
+    arrowLeft.classList.add("fa-solid", "fa-arrow-left");
+    const closeIcone = document.createElement("i");
+    closeIcone.classList.add("fa-solid", "fa-xmark");
+
+    const modalTitle = document.createElement("h3");
+    modalTitle.textContent = "Galerie photo"; 
+
+    const miniGallery = document.createElement("div");
+    miniGallery.classList.add("miniGallery");
+
+    const line = document.createElement("hr");
+
+    const addPictureBtn = document.createElement("button");
+    addPictureBtn.classList.add("addPictureButton");
+    addPictureBtn.textContent = "Ajouter une photo";
+
+    modalGallery.appendChild(arrowLeft);
+    modalGallery.appendChild(closeIcone);
+    modalGallery.appendChild(modalTitle);
+    modalGallery.appendChild(miniGallery);
+    modalGallery.appendChild(line);
+    modalGallery.appendChild(addPictureBtn);
+}
+
+function connected () {
+    const userConnected = localStorage.getItem("token");
+    if (userConnected) {
+        editionMode ();
+        mainGallery ();
+        openModal();
+    } else {
+        filters ();
+        mainGallery ();
+    }
+};
+connected ();
+
+
