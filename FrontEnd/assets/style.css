@@ -297,6 +297,11 @@ footer nav ul {
 	display: none;
 }
 
+.modifierBtn a {
+	text-decoration: none;
+	color: black;
+}
+
 /** CSS fenêtre modale**/
 .modal {
 	z-index: 1;
@@ -312,7 +317,8 @@ footer nav ul {
 	display: none;
 }
 
-.modalGallery {
+/**CSS commun aux 2 modales **/
+.modalGallery, .modalAddPictureForm {
 	background-color: white;
 	width: 630px;
 	display: flex;
@@ -320,38 +326,150 @@ footer nav ul {
 	justify-content: center;
 	align-items: center;
 	border-radius: 10px;
-	overflow: auto;
 	position: relative;
 	padding-bottom: 20px;
 }
 
-.fa-arrow-left {
+.previousModal {
 	position: absolute;
 	left: 30px;
 	top: 30px;
+	cursor: pointer;
 }
 
-.fa-xmark {
+.closeModal {
 	position: absolute;
 	right: 30px;
 	top: 30px;
+	cursor: pointer;
 }
 
-h3 {
+.modalTitle {
 	font-size: 26px;
 	margin-top: 60px;
-}
-
-.miniGallery {
-	margin: 40px auto;
-}
-
-.miniGallery img {
-	width: 78px;
-	height: 104px;
 }
 
 hr {
 	border: solid 1px #b3b3b3;
 	width: 70%;
+}
+
+.formLine {
+	width: 100%;
+}
+
+/**Pour modale mini galerie, suppression images **/
+.miniGallery {
+	margin: 40px 100px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	overflow: auto;
+}
+
+.miniImageGallery {
+	width: 78px;
+	height: 104px;
+	margin-bottom: 25px;
+}
+
+.deleteImageBtn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 17px;
+	width: 17px;
+	background-color: black;
+	color: white;
+	border-radius: 3px;
+	position: relative;
+	left: 70%;
+    bottom: 85%;
+	cursor: pointer;
+}
+
+.addPictureButton {
+	width: 237px;
+}
+
+/**Pour modale formulaire ajout photo **/
+form {
+	display: flex;
+	flex-direction: column;
+}
+
+.blocToAddPicture {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 420px;
+  	padding-top: 13px;
+	padding-bottom: 19px;
+  	border-radius: 3px;
+  	background: #E8F1F6;
+	margin-top: 36px;
+}
+
+.iconeFormPicture {
+	color: #CBD6DC;
+	font-size: 76px;
+}
+
+.AddPictureBtn {
+	width: 173px;
+	padding: 10px;
+	border-radius: 50px;
+	text-align: center;
+	cursor: pointer;
+	background: #CBD6DC;
+	color: #306685;
+	margin-top: 6px;
+	font-family: Work Sans;
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.pictureBtnHidden {
+	opacity: 0;
+	height: 7px;
+}
+
+.formatIndication {
+	color: black;
+	text-align: center;
+	font-family: Work Sans;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+}
+  
+.titleFormLabel {
+	margin-top: 20px;
+	margin-bottom: 10px;
+	color: #3D3D3D;
+}
+
+#pictureTitle, #categoryName {
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	background: #FFF;
+	width: 420px;
+	height: 51px;
+}
+ 
+#categoryName {
+	margin-bottom: 40px
+}
+  
+.submitBtn {
+	margin : 35px auto;
+	width: 237px;
+  	height: 36px;
+	border-radius: 60px;
+	border: none;
+	color: #FFF;
+	text-align: center;
+	font-family: Syne;
+	font-size: 14px;
 }

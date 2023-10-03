@@ -17,21 +17,21 @@ function logIn () {
         fetch("http://localhost:5678/api/users/login", {
             method: "POST",
             headers: {
-                "Content-Type" : "application/json"
+                "Accept" : "application/json",
+                "Content-Type" : "application/json",
             },
             body: JSON.stringify(userIdentifier) //Converti en une chaîne de caractère au format JSON
         })
-        .then (response => {
-            if (response.ok) {
-            const identifiers = response.json();
-            localStorage.setItem("token", identifiers.token); //enregistrer le token dans le localStorage
-            window.location.href = "./index.html"; //redirige vers la page d'accueil en étant connecté
+        .then (response => response.json())
+        .then (identifiers => {
+            if (identifiers.token) {
+                sessionStorage.setItem("token", identifiers.token);//Enregistre le token dans le local storage
+                window.location.href = "./index.html"; //Redirige vers la page d'accueil
             } else {
-                //Affiche un message d'erreur dans le formulaire, lorsque l'identifiant et/ou le mot de passe n'est pas le bon
                 errorMessage.textContent = "Erreur dans l'identifiant ou le mot de passe";
                 errorMessage.classList.add("error");
             }
-        });   
+        });
     });
 };
 logIn ();

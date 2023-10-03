@@ -15,7 +15,7 @@ function editionMode() {
         const btnLog = document.querySelector(".btnLog");
         btnLog.innerHTML = "logout";
         btnLog.addEventListener("click", function () {
-            localStorage.removeItem("token");
+            sessionStorage.removeItem("token");
         })
 }
 
@@ -95,52 +95,11 @@ function filters() {
     });
 };
 
-function openModal() {
-    const modifierBtn = document.querySelector(".modifierBtn");
-    modifierBtn.addEventListener("click", function () {
-        modalWorks ();
-    });
-};
-
-function modalWorks() {
-    const modal = document.querySelector(".modal");
-    modal.style.display = "flex";
-
-    const modalGallery = document.createElement("div");
-    modalGallery.classList.add("modalGallery");
-    modal.appendChild(modalGallery);
-
-    const arrowLeft = document.createElement("i");
-    arrowLeft.classList.add("fa-solid", "fa-arrow-left");
-    const closeIcone = document.createElement("i");
-    closeIcone.classList.add("fa-solid", "fa-xmark");
-
-    const modalTitle = document.createElement("h3");
-    modalTitle.textContent = "Galerie photo"; 
-
-    const miniGallery = document.createElement("div");
-    miniGallery.classList.add("miniGallery");
-
-    const line = document.createElement("hr");
-
-    const addPictureBtn = document.createElement("button");
-    addPictureBtn.classList.add("addPictureButton");
-    addPictureBtn.textContent = "Ajouter une photo";
-
-    modalGallery.appendChild(arrowLeft);
-    modalGallery.appendChild(closeIcone);
-    modalGallery.appendChild(modalTitle);
-    modalGallery.appendChild(miniGallery);
-    modalGallery.appendChild(line);
-    modalGallery.appendChild(addPictureBtn);
-}
-
 function connected () {
-    const userConnected = localStorage.getItem("token");
+    const userConnected = sessionStorage.getItem("token");
     if (userConnected) {
         editionMode ();
         mainGallery ();
-        openModal();
     } else {
         filters ();
         mainGallery ();
