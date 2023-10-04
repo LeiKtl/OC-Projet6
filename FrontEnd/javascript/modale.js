@@ -48,7 +48,7 @@ function recuperationModalGallery () {
         for (i = 0 ; i < worksGallery.length ; i++) {
             const figureModal = document.createElement("figure");
             figureModal.classList.add("figureModal")
-            figureModal.setAttribute("data-id", worksGallery[i].categoryId);
+            figureModal.setAttribute("data-id", worksGallery[i].id);
 
             const miniImage = document.createElement("img");
             miniImage.classList.add("miniImageGallery");
@@ -60,9 +60,9 @@ function recuperationModalGallery () {
             const trashcanIcone = document.createElement("i");
             trashcanIcone.classList.add("fa-solid", "fa-trash-can", "fa-xs");
 
+            //Evenement au clique sur la corbeille, avec la fonction qui permet de supprimer le projet selectionné
             deleteImage.addEventListener("click", function () {
-            
-                console.log(figureModal.dataset.id);
+                //console.log(figureModal.dataset.id);
                 const projectId = figureModal.dataset.id;
                 
                 fetch("http://localhost:5678/api/works/" + projectId, {
@@ -75,12 +75,11 @@ function recuperationModalGallery () {
                 })
                 .then(Response => {
                     if (Response.ok) {
-                        console.log("ca fonctionne");
-                        gallery.innerHTML = "";
+                        //console.log("ca fonctionne");
                         recuperationModalGallery();
                         mainGallery();
                     } else {
-                        console.log("ca ne fonctionne pas");
+                        console.log("Une erreur s'est produite, le projet n'a pas été supprimé");
                     };
                 });
             });
@@ -111,7 +110,7 @@ function modalAddPicture () {
     closeIcone.addEventListener("click", closeModal);
   
     const modalTitle = document.createElement("h3");
-    modalTitle.textContent = "Ajouter photo";
+    modalTitle.textContent = "Ajout photo";
     modalTitle.classList.add("modalTitle")
     
     const formModal = document.createElement("div");
@@ -125,6 +124,12 @@ function modalAddPicture () {
   
     const iconeForm = document.createElement("i");
     iconeForm.classList.add("fa-regular", "fa-image", "iconeFormPicture");
+
+    //peour visualiser l'image sélectionnée
+    const formImagePreview = document.createElement("img");
+    formImagePreview.classList.add("formImagePreview");
+    formImagePreview.src = "";
+    formImagePreview.alt = "";
   
     const labelAddFile = document.createElement("label");
     labelAddFile.setAttribute("for", "addPicture");
@@ -133,9 +138,15 @@ function modalAddPicture () {
     
     const addFile = document.createElement("input");
     addFile.type = "file";
-    addFile.setAttribute("id", "addPicture");
+    addFile.accept = ".jpg, .png";
+    addFile.setAttribute("id", "addPictureFile");
     addFile.name = "addPicture";
     addFile.classList.add("pictureBtnHidden");
+    addFile.required = true;
+
+    addFile.addEventListener("change", function (event) {
+        event.preventDefault();
+    })
   
     const formatIndication =  document.createElement("p");
     formatIndication.textContent = "jpg, png : 4mo max";
@@ -151,7 +162,7 @@ function modalAddPicture () {
     pictureTitle.type = "text";
     pictureTitle.setAttribute("id", "pictureTitle");
     pictureTitle.name = "pictureTitle";
-    pictureTitle.classList.add("textAreaForm");
+    pictureTitle.required = true;
     
     const selectCategoryTitle = document.createElement("label");
     selectCategoryTitle.textContent = "Categorie";
@@ -161,9 +172,9 @@ function modalAddPicture () {
     const selectCategory = document.createElement("select");
     selectCategory.setAttribute("id", "categoryName");
     selectCategory.name = "categoryName";
-    pictureTitle.classList.add("textAreaForm");
+    selectCategory.required = true;
 
-    //Appel à l'API pour récupérer les catégories et l'ajouter aux options de select dans formulaire
+    //Appel à l'API pour récupérer les catégories et l'ajouter aux options de select dans le formulaire
     fetch("http://localhost:5678/api/categories")
     .then(data => data.json())
     .then(categories => {
@@ -182,7 +193,8 @@ function modalAddPicture () {
     const submitForm = document.createElement("button");
     submitForm.type = "submit";
     submitForm.textContent = "Valider";
-    submitForm.classList.add("submitBtn");
+    submitForm.classList.add("submitBtn", "btnDisabled");
+    submitForm.addEventListener("submit", sendNewProject);
     
     modal.appendChild(modalAddPictureForm);
     modalAddPictureForm.appendChild(arrowLeft);
@@ -192,6 +204,7 @@ function modalAddPicture () {
     formModal.appendChild(form);
     form.appendChild(blocToAddPicture);
     blocToAddPicture.appendChild(iconeForm);
+    blocToAddPicture.appendChild(formImagePreview);
     blocToAddPicture.appendChild(labelAddFile);
     blocToAddPicture.appendChild(addFile);
     blocToAddPicture.appendChild(formatIndication);
@@ -203,17 +216,37 @@ function modalAddPicture () {
     form.appendChild(submitForm);
 };
 
-//Remet les attribut à leur etat d'origine lorsque la modale est fermer, + enlève les eventListener.
+function sendNewProject (event) {
+    event.preventDefault();
+    const pictureFile = document.getElementById("addPictureFile").value;
+    const pictureTitle = document.getElementById("pictureTitle").value;
+    const pictureCategory = document.getElementById("categoryName").value;
+    const pictureValue = {
+        title: pictureTitle,
+        imageUrl: pictureFile,
+        categoryId: pictureCategory,
+    }
+
+    fetch("http://localhost:5678/api/works", {
+        method : "POST",
+        headers : {
+            "Content-type": "application/json; charset=UTF-8"
+        },
+        body : JSON.stringify(pictureValue)
+    })
+}
+
+//Remet les attribut à leur etat d'origine lorsque la modale est fermer, + enlève les eventListener; + ferme la modale lors du clique sur la croix
 function closeModal () {
     modal.style.display = "none";
     modal.setAttribute("aria-hidden", true);
     modal.removeAttribute("aria-modal");
     modal.removeEventListener("click", closeModal);
     modal.querySelector(".closeModal").removeEventListener("click", closeModal);
-    modal.querySelector(".modalGallery").removeEventListener("click", stopPropagation);
+   // modal.querySelector(".modalGallery").removeEventListener("click", stopPropagation);
 };
 
-//Fonction qui permet de ne pas fermer la modal
+//Fonction qui permet de ne pas fermer la modal ouverte lorsque l'on clique dessus
 function stopPropagation (event) {
     event.stopPropagation();
 };

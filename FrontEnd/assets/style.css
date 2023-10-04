@@ -59,13 +59,14 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 50px 0;
 }
+
 .onThePage{ /** Ajouté **/
 	font-weight: 700;
 }
 section {
-	margin: 50px 0
+	margin: 50px 0;
 }
 
 h1{
@@ -74,7 +75,7 @@ h1{
 	font-family: 'Syne';
 	font-size: 22px;
 	font-weight: 800;
-	color: #B1663C
+	color: #B1663C;
 }
 
 h1 > span {
@@ -363,14 +364,13 @@ hr {
 	margin: 40px 100px;
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
 	overflow: auto;
+	gap: 10px;
 }
 
 .miniImageGallery {
 	width: 78px;
 	height: 104px;
-	margin-bottom: 25px;
 }
 
 .deleteImageBtn {
@@ -384,7 +384,7 @@ hr {
 	border-radius: 3px;
 	position: relative;
 	left: 70%;
-    bottom: 85%;
+    bottom: 82%;
 	cursor: pointer;
 }
 
@@ -469,7 +469,12 @@ form {
 	border-radius: 60px;
 	border: none;
 	color: #FFF;
+	background-color: #1D6154;
 	text-align: center;
 	font-family: Syne;
 	font-size: 14px;
+}
+
+.btnDisabled {
+	background-color: #A7A7A7;
 }
