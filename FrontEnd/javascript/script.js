@@ -1,4 +1,4 @@
-//Fonction qui lorsque l'utilisateur est connecté change le bouton "login" en "logout", et lui permet de se deconnecter en cliquant dessus + ajout des éléments du mode édition
+//Fonction qui lorsque l'utilisateur est connecté change le bouton "login" en "logout", et lui permet de se deconnecter en cliquant dessus + ajout des éléments du mode édition (connecté)
 function editionMode() {
     const editionMode = document.querySelector(".editionMode");
         editionMode.style.display = "flex";
@@ -14,8 +14,9 @@ function editionMode() {
         
         const btnLog = document.querySelector(".btnLog");
         btnLog.innerHTML = "logout";
+        //Lorsque l'on clique sur logout cela déconnecte l'utilisateur
         btnLog.addEventListener("click", function () {
-            sessionStorage.removeItem("token");
+            localStorage.removeItem("token");
         })
 }
 
@@ -96,7 +97,7 @@ function filters() {
 };
 
 function connected () {
-    const userConnected = sessionStorage.getItem("token");
+    const userConnected = localStorage.getItem("token");
     if (userConnected) {
         editionMode ();
         mainGallery ();

@@ -11,8 +11,8 @@ function logIn () {
         const errorMessage = document.querySelector(".errorMessage");
 
         const userIdentifier = {
-            email: emailValue, //récupère la valeur entrée dans le formulaire
-            password: passwordValue, //récupère la valeur entrée dans le formulaire
+            email: emailValue,
+            password: passwordValue,
         };
         fetch("http://localhost:5678/api/users/login", {
             method: "POST",
@@ -25,9 +25,10 @@ function logIn () {
         .then (response => response.json())
         .then (identifiers => {
             if (identifiers.token) {
-                sessionStorage.setItem("token", identifiers.token);//Enregistre le token dans le local storage
-                window.location.href = "./index.html"; //Redirige vers la page d'accueil
+                localStorage.setItem("token", identifiers.token);//Enregistre le token dans le local storage
+                window.location.href = "./index.html";
             } else {
+                //Affiche un message d'erreur si les identifiants ne sont pas les bons
                 errorMessage.textContent = "Erreur dans l'identifiant ou le mot de passe";
                 errorMessage.classList.add("error");
             }

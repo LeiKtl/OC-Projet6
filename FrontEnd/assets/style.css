@@ -156,6 +156,7 @@ li a:hover, /** Ajouté **/
 
 .gallery img {
 	width: 100%;
+	max-height: 490px; /** Ajouté **/
 
 }
 
@@ -359,7 +360,7 @@ hr {
 	width: 100%;
 }
 
-/**Pour modale mini galerie, suppression images **/
+/**CSS modale mini galerie et suppression d'images **/
 .miniGallery {
 	margin: 40px 100px;
 	display: flex;
@@ -392,7 +393,7 @@ hr {
 	width: 237px;
 }
 
-/**Pour modale formulaire ajout photo **/
+/**CSS modale formulaire ajout photo **/
 form {
 	display: flex;
 	flex-direction: column;
@@ -403,19 +404,28 @@ form {
 	flex-direction: column;
 	align-items: center;
 	width: 420px;
-  	padding-top: 13px;
-	padding-bottom: 19px;
   	border-radius: 3px;
   	background: #E8F1F6;
 	margin-top: 36px;
+	height: 169px;
+}
+
+.formPicturePreview {
+	height: 169px;
+	width: 129px;
+}
+
+.labelPicturePreview {
+	cursor: pointer;
 }
 
 .iconeFormPicture {
 	color: #CBD6DC;
-	font-size: 76px;
+	font-size: 70px;
+	margin-top: 18px;
 }
 
-.AddPictureBtn {
+.addPictureBtn {
 	width: 173px;
 	padding: 10px;
 	border-radius: 50px;
@@ -431,7 +441,7 @@ form {
 
 .pictureBtnHidden {
 	opacity: 0;
-	height: 7px;
+	height: 0;
 }
 
 .formatIndication {
@@ -442,12 +452,15 @@ form {
 	font-style: normal;
 	font-weight: 400;
 	line-height: normal;
+	margin-top: 7px;
 }
   
 .titleFormLabel {
 	margin-top: 20px;
 	margin-bottom: 10px;
 	color: #3D3D3D;
+	line-height: 16px;
+	font-weight: 500;
 }
 
 #pictureTitle, #categoryName {
@@ -456,6 +469,10 @@ form {
 	background: #FFF;
 	width: 420px;
 	height: 51px;
+	font-family: Work Sans;
+	font-size: 14px;
+	font-weight: 400;
+	color: #444444;
 }
  
 #categoryName {
@@ -473,8 +490,10 @@ form {
 	text-align: center;
 	font-family: Syne;
 	font-size: 14px;
+	cursor: pointer;
 }
 
 .btnDisabled {
 	background-color: #A7A7A7;
+	cursor: default;
 }
