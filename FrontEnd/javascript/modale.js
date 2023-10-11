@@ -10,32 +10,20 @@ function modalGalleryElements () {
     modalGallery.setAttribute("id", "modalGallery")
     modalGallery.addEventListener("click", stopPropagation);
 
-    const closeIcone = document.createElement("i");
-    closeIcone.classList.add("fa-solid", "fa-xmark", "fa-xl", "closeModal");
-    closeIcone.addEventListener("click", closeModal);
+    modalGallery.innerHTML = /* html */
+    `<i class = "fa-solid fa-xmark fa-xl closeModal"></i>
+    <h3 class = "modalTitle">Galerie photo</h3>
+    <div class = "miniGallery"></div>
+    <hr>
+    <button class = "addPictureButton">Ajouter une photo</button>
+    `;
+    
+    modalGallery.querySelector(".closeModal").addEventListener("click", closeModal);
 
-    const modalTitle = document.createElement("h3");
-    modalTitle.classList.add("modalTitle");
-    modalTitle.textContent = "Galerie photo"; 
-
-    const miniGallery = document.createElement("div");
-    miniGallery.classList.add("miniGallery");
-
-    recuperationModalGallery ();
-
-    const line = document.createElement("hr");
-
-    const addPictureBtn = document.createElement("button");
-    addPictureBtn.classList.add("addPictureButton");
-    addPictureBtn.textContent = "Ajouter une photo";
-    addPictureBtn.addEventListener("click", modalAddPicture); //Renvoie sur la seconde modale d'ajout de photo
+    modalGallery.querySelector(".addPictureButton").addEventListener("click", modalAddPicture); //Renvoie sur la seconde modale d'ajout de photo
 
     modal.appendChild(modalGallery);
-    modalGallery.appendChild(closeIcone);
-    modalGallery.appendChild(modalTitle);
-    modalGallery.appendChild(miniGallery);
-    modalGallery.appendChild(line);
-    modalGallery.appendChild(addPictureBtn);
+    recuperationModalGallery ();
 };
 
 // Fonction pour la récupération des projets de la galerie de la modale
@@ -50,47 +38,42 @@ function recuperationModalGallery () {
             figureModal.classList.add("figureModal")
             figureModal.setAttribute("data-id", worksGallery[i].id);
 
-            const miniImage = document.createElement("img");
-            miniImage.classList.add("miniImageGallery");
-            miniImage.src = worksGallery[i].imageUrl;
-            miniImage.alt = worksGallery[i].title;
-
-            const deleteImage = document.createElement("span");
-            deleteImage.classList.add("deleteImageBtn");
-            const trashcanIcone = document.createElement("i");
-            trashcanIcone.classList.add("fa-solid", "fa-trash-can", "fa-xs");
+            figureModal.innerHTML = /* html */ 
+            `<img class = "miniPictureGallery" src = ${worksGallery[i].imageUrl} alt = ${worksGallery[i].title}>
+            <span class = "deletePictureBtn">
+                <i class = "fa-solid fa-trash-can fa-xs"></i>
+            </span>
+            `;
 
             //Evenement au clique sur la corbeille, avec la fonction qui permet de supprimer le projet selectionné
-            deleteImage.addEventListener("click", function (event) {
-                //console.log(figureModal.dataset.id);
+            figureModal.querySelector(".deletePictureBtn").addEventListener("click", function (event) {
                 event.preventDefault();
-                const projectId = figureModal.dataset.id;
-                
-                fetch("http://localhost:5678/api/works/" + projectId, {
-                    method: "DELETE",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "*/*",
-                        "Authorization": `Bearer ${token}`,
-                    },
-                })
-                .then(Response => {
-                    if (Response.ok) {
-                        //console.log("ca fonctionne");
-                        recuperationModalGallery();
-                        mainGallery();
-                    } else {
-                        console.log("Une erreur s'est produite, le projet n'a pas été supprimé");
-                    };
-                });
+                deletePicture(figureModal);
             });
-        
-            deleteImage.appendChild(trashcanIcone)
-            figureModal.appendChild(miniImage);
-            figureModal.appendChild(deleteImage);
+
             gallery.appendChild(figureModal);
         };
-        
+    });
+};
+
+//Fonction qui permet de supprimer un projet
+function deletePicture ( figureModal) {
+    const projectId = figureModal.dataset.id;
+    fetch("http://localhost:5678/api/works/" + projectId, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "*/*",
+            "Authorization": `Bearer ${token}`,
+        },
+    })
+    .then(Response => {
+        if (Response.ok) {
+            recuperationModalGallery();
+            mainGallery()
+        } else {
+            console.log("Une erreur s'est produite, le projet n'a pas été supprimé");
+        };
     });
 };
 
@@ -102,93 +85,47 @@ function modalAddPicture (event) {
     const modalAddPictureForm = document.createElement("div")
     modalAddPictureForm.classList.add("modalAddPictureForm");
     modalAddPictureForm.addEventListener("click", stopPropagation);
-  
-    const arrowLeft = document.createElement("i");
-    arrowLeft.classList.add("fa-solid", "fa-arrow-left", "fa-xl", "previousModal");
-    arrowLeft.addEventListener("click", generateModalGallery);
-    
-    const closeIcone = document.createElement("i");
-    closeIcone.classList.add("fa-solid", "fa-xmark", "fa-xl", "closeModal");
-    closeIcone.addEventListener("click", closeModal);
-  
-    const modalTitle = document.createElement("h3");
-    modalTitle.textContent = "Ajout photo";
-    modalTitle.classList.add("modalTitle")
-  
-    //Ajout du formulaire
-    const form = document.createElement("form");
+    modalAddPictureForm.innerHTML = /* html */ 
+    `<i class = "fa-solid fa-arrow-left fa-xl previousModal"></i>
+    <i class = "fa-solid fa-xmark fa-xl closeModal"></i>
+    <h3 class= "modalTitle">Ajout photo</h3>
+    <form class = "formModal">
+        <div class = "blocToAddPicture">
+            <i class = "fa-regular fa-image  iconeFormPicture"></i>
+            <label for = "addPictureFile" class = "addPictureBtn">+ Ajouter une photo</label>
+            <input id = "addPictureFile" type = "file"  name = "addPictureFile" class = "pictureBtnHidden addFile" accept = ".jpg, .png" required>
+            <p class = "formatIndication">jpg, png : 4mo max</p>
+        </div>
+        <label for = "pictureTitle" class = "titleFormLabel">Titre</label>
+        <input type = "text" id = "pictureTitle" name = "pictureTitle" class = "pictureTitle" required>
+        <label for = "categoryName" class = "titleFormLabel">Catégorie</label>
+        <select id = "categoryName" name = "categoryName" class = "categoryName" required>
+            <option class = "blankChoiceCategory"></option>
+        </select>
+        <hr class = "formLine">
+        <button type = "submit" class = "submitBtn btnDisabled">Valider</button>
+    </form>
+    `;
+    modalAddPictureForm.querySelector(".previousModal").addEventListener("click", generateModalGallery); //Retour modale précèdente
+    modalAddPictureForm.querySelector(".closeModal").addEventListener("click", closeModal); //Ferme la modale
+    modalAddPictureForm.querySelector(".addFile").addEventListener("change", picturePreview); ///Affiche l'image sélectionnée dans le formulaire
 
-   //Bloc qui contient les éléments d'ajout de l'image
-    const blocToAddPicture = document.createElement("div");
-    blocToAddPicture.classList.add("blocToAddPicture");
-  
-    const iconeForm = document.createElement("i");
-    iconeForm.classList.add("fa-regular", "fa-image", "iconeFormPicture");
-  
-    //Ajout de l'élément pour selectionner l'image à ajouter
-    const labelAddFile = document.createElement("label");
-    labelAddFile.setAttribute("for", "addPictureFile");
-    labelAddFile.textContent = "+ Ajouter une photo";
-    labelAddFile.classList.add("addPictureBtn");
-    
-    const addFile = document.createElement("input");
-    addFile.type = "file";
-    addFile.accept = ".jpg, .png";
-    addFile.setAttribute("id", "addPictureFile");
-    addFile.name = "addPicture";
-    addFile.classList.add("pictureBtnHidden");
-    addFile.required = true;
 
-    //Fonction qui affiche l'image sélectionnée dans le formulaire
-    addFile.addEventListener("change", function () {
-        //Relie l'image au label de l'input pour rendre l'image sélectionnée cliquable, ce qui permet d'en choisir une autre
-        const labelPicturePreview = document.createElement("label");
-        const formPicturePreview = document.createElement("img");
-        formPicturePreview.classList.add("formPicturePreview");
-        formPicturePreview.src = URL.createObjectURL(this.files[0]); //Créer une URL à l'image sélectionnée et permet de l'afficher
-        formPicturePreview.alt = pictureTitle.value;
-        labelPicturePreview.setAttribute("for", "addPictureFile");
-        labelPicturePreview.classList.add("labelPicturePreview");
+    categoriesOptions(modalAddPictureForm);
 
-        blocToAddPicture.appendChild(labelPicturePreview);
-        labelPicturePreview.appendChild(formPicturePreview)
+    const formModal = modalAddPictureForm.querySelector(".formModal");
+    const pictureTitle = modalAddPictureForm.querySelector(".pictureTitle");
+    const addFile = modalAddPictureForm.querySelector(".addFile");
+    const categoryName = modalAddPictureForm.querySelector(".categoryName");
+    const submitForm = modalAddPictureForm.querySelector(".submitBtn");
 
-        
-        labelAddFile.style.display = "none";
-        iconeForm.style.display = "none";
-        formatIndication.style.display = "none";
-    });
-  
-    const formatIndication =  document.createElement("p");
-    formatIndication.textContent = "jpg, png : 4mo max";
-    formatIndication.classList.add("formatIndication");
+    verifyInputForm(formModal, addFile, pictureTitle, categoryName, submitForm);//Vérifie que les champs sont bien remplis
+    sendNewProject(formModal, pictureTitle,addFile,categoryName);//Envoie un nouveau projet
 
-    //Ajout de l'élément pour ajouter le titre de la photo
-    const labelPictureTitle = document.createElement("label");
-    labelPictureTitle.setAttribute("for", "pictureTitle");
-    labelPictureTitle.textContent = "Titre";
-    labelPictureTitle.classList.add("titleFormLabel");
-  
-    const pictureTitle = document.createElement("input");
-    pictureTitle.type = "text";
-    pictureTitle.setAttribute("id", "pictureTitle");
-    pictureTitle.name = "pictureTitle";
-    pictureTitle.required = true;
-    
-    //Ajout de l'élément pour la sélection de la catégorie de la photo
-    const selectCategoryTitle = document.createElement("label");
-    selectCategoryTitle.textContent = "Categorie";
-    selectCategoryTitle.setAttribute("for", "categoryName")
-    selectCategoryTitle.classList.add("titleFormLabel")
+    modal.appendChild(modalAddPictureForm);
+};
 
-    const selectCategory = document.createElement("select");
-    selectCategory.setAttribute("id", "categoryName");
-    selectCategory.name = "categoryName";
-    selectCategory.required = true;
-
-    const blankChoiceCategory = document.createElement("option");
-    selectCategory.appendChild(blankChoiceCategory);
-
+function categoriesOptions(modalAddPictureForm) {
     //Appel à l'API pour récupérer les catégories et l'ajouter aux options de select dans le formulaire
     fetch("http://localhost:5678/api/categories")
     .then(data => data.json())
@@ -198,21 +135,38 @@ function modalAddPicture (event) {
             categoryChoice.classList.add("categoryChoice");
             categoryChoice.setAttribute("value", category.id);
             categoryChoice.innerText = category.name;
-            selectCategory.appendChild(categoryChoice);
-        })
+            modalAddPictureForm.querySelector(".categoryName").appendChild(categoryChoice);
+        });
     });
-  
-    const line = document.createElement("hr");
-    line.classList.add("formLine");
-    
-    const submitForm = document.createElement("button");
-    submitForm.type = "submit";
-    submitForm.textContent = "Valider";
-    submitForm.classList.add("submitBtn", "btnDisabled");
+};
 
+
+//Fonction qui permet d'afficher l'image sélectionnée dans le formulaire
+function picturePreview() {
+    const blocToAddPicture = document.querySelector(".blocToAddPicture");
+    blocToAddPicture.innerHTML = "";
+
+    blocToAddPicture.innerHTML = /* html */
+    `<label for = "addPictureFile" class = "labelPicturePreview">
+        <img class = "formPicturePreview">
+    </label>
+    <input id = "addPictureFile" type = "file"  name = "addPictureFile" class = "pictureBtnHidden addFile" accept = ".jpg, .png">
+    `;
+
+    const formPicturePreview = document.querySelector(".formPicturePreview");
+    formPicturePreview.src = URL.createObjectURL(this.files[0]); //Créer une URL à l'image sélectionnée et permet de l'afficher
+
+    const pictureTitle = document.querySelector(".pictureTitle");
+    formPicturePreview.alt = pictureTitle.value;
+
+    const addFile = document.querySelector(".addFile");
+    addFile.addEventListener("change", picturePreview);
+};
+
+function verifyInputForm(formModal, addFile, pictureTitle, categoryName, submitForm) {
     //Vérifie que tous les champs sont remplis, si c'est le cas change l'aspect du bouton d'envoie du formulaire, sinon il reste non cliquable
-    form.addEventListener("change", function() {
-        if (addFile.files[0] && pictureTitle.value != "" && selectCategory != "") {
+    formModal.addEventListener("change", function() {
+        if (addFile.files[0] && pictureTitle.value != "" && categoryName.value != "") {
             submitForm.disabled = false;
             submitForm.classList.remove("btnDisabled");
         } else { 
@@ -220,55 +174,39 @@ function modalAddPicture (event) {
             submitForm.classList.add("btnDisabled");
         }
     });
-
-    //Envoie du formulaire pour l'ajout du projet avec appel à l'API
-    form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        const formData = new FormData();
-
-        formData.append("title", pictureTitle.value);
-        formData.append("image", addFile.files[0]);
-        formData.append("category", selectCategory.value);
-
-        fetch("http://localhost:5678/api/works", {
-            method : "POST",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Accept" : "application/json",
-            },
-            body : formData,
-        })
-        .then (Response => {
-            if (Response.ok) {
-                Response.json();
-                mainGallery();
-                modal.innerHTML = "";
-                modalGalleryElements(); //redirige vers la modale de la galerie avec le nouveau projet
-            } else {
-                console.error("Un problème est survenu, l'image n'a pas pu être ajoutée");
-            };
-        });
-    });
-
-    
-    modal.appendChild(modalAddPictureForm);
-    modalAddPictureForm.appendChild(arrowLeft);
-    modalAddPictureForm.appendChild(closeIcone);
-    modalAddPictureForm.appendChild(modalTitle);
-    modalAddPictureForm.appendChild(form);
-    form.appendChild(blocToAddPicture);
-    blocToAddPicture.appendChild(iconeForm);
-    blocToAddPicture.appendChild(labelAddFile);
-    blocToAddPicture.appendChild(addFile);
-    blocToAddPicture.appendChild(formatIndication);
-    form.appendChild(labelPictureTitle);
-    form.appendChild(pictureTitle);
-    form.appendChild(selectCategoryTitle);
-    form.appendChild(selectCategory);
-    form.appendChild(line);
-    form.appendChild(submitForm);
 };
 
+//Fonction pour l'ajout du projet avec appel à l'API
+function sendNewProject(formModal, pictureTitle, addFile, categoryName) {
+
+    formModal.addEventListener("submit", function (event) {
+        event.preventDefault();
+        
+       const formData = new FormData();
+       formData.append("title", pictureTitle.value);
+       formData.append("image", addFile.files[0]);
+       formData.append("category", categoryName.value);
+
+       fetch("http://localhost:5678/api/works", {
+           method : "POST",
+           headers: {
+               "Authorization": `Bearer ${token}`,
+               "Accept" : "application/json",
+           },
+           body : formData,
+       })
+       .then (Response => {
+           if (Response.ok) {
+               Response.json();
+               mainGallery();
+               modal.innerHTML = "";
+               modalGalleryElements(); //redirige vers la modale de la galerie avec le nouveau projet
+           } else {
+               console.error("Un problème est survenu, l'image n'a pas pu être ajoutée");
+           };
+       });
+   });
+};
 
 //Remet les attribut à leur etat d'origine lorsque la modale est fermer, + enlève les eventListener; + ferme la modale lors du clique sur la croix
 function closeModal (event) {

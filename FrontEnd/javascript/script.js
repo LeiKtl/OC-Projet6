@@ -1,24 +1,24 @@
 //Fonction qui lorsque l'utilisateur est connecté change le bouton "login" en "logout", et lui permet de se deconnecter en cliquant dessus + ajout des éléments du mode édition (connecté)
 function editionMode() {
     const editionMode = document.querySelector(".editionMode");
-        editionMode.style.display = "flex";
+    editionMode.style.display = "flex";
 
-        const editionGallery = document.querySelector(".editionGallery");
-        editionGallery.style.marginBottom = "80px";
+    const editionGallery = document.querySelector(".editionGallery");
+    editionGallery.style.marginBottom = "80px";
 
-        const modifierBtn = document.querySelector(".modifierBtn");
-        modifierBtn.style.display = "block";
+    const modifierBtn = document.querySelector(".modifierBtn");
+    modifierBtn.style.display = "block";
 
-        const filters = document.querySelector(".filters");
-        filters.style.display = "none";
+    const filters = document.querySelector(".filters");
+    filters.style.display = "none";
         
-        const btnLog = document.querySelector(".btnLog");
-        btnLog.innerHTML = "logout";
+    const btnLog = document.querySelector(".btnLog");
+    btnLog.innerHTML = "logout";
         //Lorsque l'on clique sur logout cela déconnecte l'utilisateur
-        btnLog.addEventListener("click", function () {
-            localStorage.removeItem("token");
-        })
-}
+    btnLog.addEventListener("click", function () {
+        localStorage.removeItem("token");
+    });
+};
 
 //Création de la fonction qui récupère les travaux de l'architecte
 function mainGallery(){
@@ -87,9 +87,9 @@ function filters() {
                     } else {
                         figure.style.display = "none";
                     }
-                })
-            })
-        })   
+                });
+            });
+        });
     })
     .catch(error => {
         console.error("Un problème est survenu lors de la récupération des données:", error);
@@ -107,5 +107,3 @@ function connected () {
     }
 };
 connected ();
-
-

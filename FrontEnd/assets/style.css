@@ -369,12 +369,12 @@ hr {
 	gap: 10px;
 }
 
-.miniImageGallery {
+.miniPictureGallery {
 	width: 78px;
 	height: 104px;
 }
 
-.deleteImageBtn {
+.deletePictureBtn {
 	display: flex;
 	justify-content: center;
 	align-items: center;
