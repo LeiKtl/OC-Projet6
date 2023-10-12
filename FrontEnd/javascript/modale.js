@@ -263,7 +263,7 @@ function generateModalGallery (event) {
     modal.style.display = "flex";
     modal.removeAttribute("aria-hidden");
     modal.setAttribute("aria-modal", true);
-    modalGalleryElements(event);
+    modalGalleryElements();
 };
 
 /**
