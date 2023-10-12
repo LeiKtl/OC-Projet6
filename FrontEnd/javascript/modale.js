@@ -78,7 +78,7 @@ function deletePicture ( figureModal) {
             recuperationModalGallery();
             mainGallery()
         } else {
-            console.log("Une erreur s'est produite, le projet n'a pas été supprimé");
+            window.alert("Une erreur s'est produite, le projet n'a pas été supprimé")
         };
     });
 };
@@ -226,7 +226,7 @@ function sendNewProject(formModal, pictureTitle, addFile, categoryName) {
                modal.innerHTML = "";
                modalGalleryElements();
            } else {
-               console.error("Un problème est survenu, l'image n'a pas pu être ajoutée");
+               window.alert("Un problème est survenu, l'image n'a pas pu être ajoutée")
            };
        });
    });
