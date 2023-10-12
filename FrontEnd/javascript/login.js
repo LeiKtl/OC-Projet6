@@ -1,10 +1,11 @@
-//Requête API afin d'envoyer et récupérer les identifiants utilisateur inscrit dans le formulaire
+/**
+ * @description API request to send and retrieve the user identifiers entered in the form, with click event on submit button and prevent default event that resets page 
+ */
 function logIn () {
     const loginForm = document.querySelector("form");
 
-    //Evenement au clique sur le bouton "se connecter" du formulaire de connexion
     loginForm.addEventListener("submit", function (event) {
-        event.preventDefault(); //Empêche l'évènement par default qui est de réinitialiser la page
+        event.preventDefault(); 
         
         const emailValue = document.getElementById("email").value;
         const passwordValue = document.getElementById("password").value;
@@ -20,15 +21,14 @@ function logIn () {
                 "Accept" : "application/json",
                 "Content-Type" : "application/json",
             },
-            body: JSON.stringify(userIdentifier) //Converti en une chaîne de caractère au format JSON
+            body: JSON.stringify(userIdentifier)
         })
         .then (response => response.json())
         .then (identifiers => {
             if (identifiers.token) {
-                localStorage.setItem("token", identifiers.token);//Enregistre le token dans le local storage
+                localStorage.setItem("token", identifiers.token);
                 window.location.href = "./index.html";
             } else {
-                //Affiche un message d'erreur si les identifiants ne sont pas les bons
                 errorMessage.textContent = "Erreur dans l'identifiant ou le mot de passe";
                 errorMessage.classList.add("error");
             }

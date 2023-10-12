@@ -2,9 +2,11 @@ const modal = document.querySelector(".modal");
 const modifierBtn = document.querySelector(".modifierBtn");
 const token = localStorage.getItem("token");
 
-// Création des éléments contenu dans la fenêtre modale (titres, icones, etc..), et appel des fonctions pour les evenements au clique
+/**
+ * @description Creation of the elements contained in the modal window and call of functions for click events
+ */
 function modalGalleryElements () {
-    modal.addEventListener("click", closeModal); //Ferme la modale au clique à l'extérieur
+    modal.addEventListener("click", closeModal);
     const modalGallery = document.createElement("div");
     modalGallery.classList.add("modalGallery");
     modalGallery.setAttribute("id", "modalGallery")
@@ -20,13 +22,15 @@ function modalGalleryElements () {
     
     modalGallery.querySelector(".closeModal").addEventListener("click", closeModal);
 
-    modalGallery.querySelector(".addPictureButton").addEventListener("click", modalAddPicture); //Renvoie sur la seconde modale d'ajout de photo
+    modalGallery.querySelector(".addPictureButton").addEventListener("click", modalAddPicture);
 
     modal.appendChild(modalGallery);
     recuperationModalGallery ();
 };
 
-// Fonction pour la récupération des projets de la galerie de la modale
+/**
+ * @description Fonction that retrieves projects to display them in the modal gallery and allows you to delete a project with click event
+ */
 function recuperationModalGallery () {
     fetch("http://localhost:5678/api/works")
     .then(data => data.json())
@@ -45,7 +49,6 @@ function recuperationModalGallery () {
             </span>
             `;
 
-            //Evenement au clique sur la corbeille, avec la fonction qui permet de supprimer le projet selectionné
             figureModal.querySelector(".deletePictureBtn").addEventListener("click", function (event) {
                 event.preventDefault();
                 deletePicture(figureModal);
@@ -56,7 +59,10 @@ function recuperationModalGallery () {
     });
 };
 
-//Fonction qui permet de supprimer un projet
+/**
+ * @description Function that allows to delete the selected project
+ * @param {*} figureModal - Name of the variable of the figure within the modal gallery that contains the id's project
+ */
 function deletePicture ( figureModal) {
     const projectId = figureModal.dataset.id;
     fetch("http://localhost:5678/api/works/" + projectId, {
@@ -77,10 +83,13 @@ function deletePicture ( figureModal) {
     });
 };
 
-// Fonction pour la modale d'ajout d'une photo
+/**
+ * @description Function that create the modal adding photo and allows you to display only one modal
+ * @param {*} event - To handle the default event
+ */
 function modalAddPicture (event) {
     event.preventDefault();
-    modal.innerHTML = ""; //Permet d'afficher qu'une seule modale
+    modal.innerHTML = "";
 
     const modalAddPictureForm = document.createElement("div")
     modalAddPictureForm.classList.add("modalAddPictureForm");
@@ -106,9 +115,9 @@ function modalAddPicture (event) {
         <button type = "submit" class = "submitBtn btnDisabled">Valider</button>
     </form>
     `;
-    modalAddPictureForm.querySelector(".previousModal").addEventListener("click", generateModalGallery); //Retour modale précèdente
-    modalAddPictureForm.querySelector(".closeModal").addEventListener("click", closeModal); //Ferme la modale
-    modalAddPictureForm.querySelector(".addFile").addEventListener("change", picturePreview); ///Affiche l'image sélectionnée dans le formulaire
+    modalAddPictureForm.querySelector(".previousModal").addEventListener("click", generateModalGallery);
+    modalAddPictureForm.querySelector(".closeModal").addEventListener("click", closeModal);
+    modalAddPictureForm.querySelector(".addFile").addEventListener("change", picturePreview);
 
 
     categoriesOptions(modalAddPictureForm);
@@ -119,14 +128,17 @@ function modalAddPicture (event) {
     const categoryName = modalAddPictureForm.querySelector(".categoryName");
     const submitForm = modalAddPictureForm.querySelector(".submitBtn");
 
-    verifyInputForm(formModal, addFile, pictureTitle, categoryName, submitForm);//Vérifie que les champs sont bien remplis
-    sendNewProject(formModal, pictureTitle,addFile,categoryName);//Envoie un nouveau projet
+    verifyInputForm(formModal, addFile, pictureTitle, categoryName, submitForm);
+    sendNewProject(formModal, pictureTitle,addFile,categoryName);
 
     modal.appendChild(modalAddPictureForm);
 };
 
+/**
+ * @description Call to the API to retrieve the categories and add them to the select options in the form
+ * @param {*} modalAddPictureForm 
+ */
 function categoriesOptions(modalAddPictureForm) {
-    //Appel à l'API pour récupérer les catégories et l'ajouter aux options de select dans le formulaire
     fetch("http://localhost:5678/api/categories")
     .then(data => data.json())
     .then(categories => {
@@ -140,8 +152,9 @@ function categoriesOptions(modalAddPictureForm) {
     });
 };
 
-
-//Fonction qui permet d'afficher l'image sélectionnée dans le formulaire
+/**
+ * @description Function that displays the selected image in the form and create an URL for this image
+ */
 function picturePreview() {
     const blocToAddPicture = document.querySelector(".blocToAddPicture");
     blocToAddPicture.innerHTML = "";
@@ -154,7 +167,7 @@ function picturePreview() {
     `;
 
     const formPicturePreview = document.querySelector(".formPicturePreview");
-    formPicturePreview.src = URL.createObjectURL(this.files[0]); //Créer une URL à l'image sélectionnée et permet de l'afficher
+    formPicturePreview.src = URL.createObjectURL(this.files[0]); 
 
     const pictureTitle = document.querySelector(".pictureTitle");
     formPicturePreview.alt = pictureTitle.value;
@@ -163,8 +176,15 @@ function picturePreview() {
     addFile.addEventListener("change", picturePreview);
 };
 
+/**
+ * @description Checks that all fields are filled, if this is the case changes the appearance of the form's submit button, otherwise it remains unclickable
+ * @param {*} formModal - Name of the variable to add the event "change"
+ * @param {*} addFile - Name of the variable that contains the <input type="file">
+ * @param {*} pictureTitle - Name of the variable that contains the name of the picture
+ * @param {*} categoryName - Name of the variable that contains the <select> for categories
+ * @param {*} submitForm  - Name of the variable that contains the submit button of the adding picture form
+ */
 function verifyInputForm(formModal, addFile, pictureTitle, categoryName, submitForm) {
-    //Vérifie que tous les champs sont remplis, si c'est le cas change l'aspect du bouton d'envoie du formulaire, sinon il reste non cliquable
     formModal.addEventListener("change", function() {
         if (addFile.files[0] && pictureTitle.value != "" && categoryName.value != "") {
             submitForm.disabled = false;
@@ -176,7 +196,13 @@ function verifyInputForm(formModal, addFile, pictureTitle, categoryName, submitF
     });
 };
 
-//Fonction pour l'ajout du projet avec appel à l'API
+/**
+ * @description Function for adding a new project, with call to the API and redirects to the gallery modal with the new project after submit
+ * @param {*} formModal - Name of the variable to add the event "submit"
+ * @param {*} pictureTitle - Name of the variable that contains the name of the picture
+ * @param {*} addFile - Name of the variable that contains the <input type="file">
+ * @param {*} categoryName - Name of the variable that contains the <select> for categories
+ */
 function sendNewProject(formModal, pictureTitle, addFile, categoryName) {
 
     formModal.addEventListener("submit", function (event) {
@@ -200,7 +226,7 @@ function sendNewProject(formModal, pictureTitle, addFile, categoryName) {
                Response.json();
                mainGallery();
                modal.innerHTML = "";
-               modalGalleryElements(); //redirige vers la modale de la galerie avec le nouveau projet
+               modalGalleryElements();
            } else {
                console.error("Un problème est survenu, l'image n'a pas pu être ajoutée");
            };
@@ -208,7 +234,10 @@ function sendNewProject(formModal, pictureTitle, addFile, categoryName) {
    });
 };
 
-//Remet les attribut à leur etat d'origine lorsque la modale est fermer, + enlève les eventListener; + ferme la modale lors du clique sur la croix
+/**
+ * @description Function that close the modal and return attributes to their original state when the modal is closed, and removes click events
+ * @param {*} event - to handle the default event
+ */
 function closeModal (event) {
     event.preventDefault();
     modal.style.display = "none";
@@ -218,20 +247,28 @@ function closeModal (event) {
     modal.querySelector(".closeModal").removeEventListener("click", closeModal);
 };
 
-//Fonction qui permet de ne pas fermer la modal ouverte lorsque l'on clique dessus
+/**
+ * @description Function that allows you to not close the open modal window when you click on it
+ * @param {*} event - to handle the default event
+ */
 function stopPropagation (event) {
     event.stopPropagation();
 };
 
-// Function pour l'apparition de la fenêtre modale et de la galerie
+/**
+ * @description Function for appearance of modal window (gallery modal) and clean the modal so that several modals are not displayed at the same time
+ * @param {*} event - to handle the default event
+ */
 function generateModalGallery (event) {
     event.preventDefault();
-    modal.innerHTML = ""; //Nettoie la modale pour ne pas que plusieurs modales s'affichent en même temps
+    modal.innerHTML = "";
     modal.style.display = "flex";
     modal.removeAttribute("aria-hidden");
     modal.setAttribute("aria-modal", true);
     modalGalleryElements(event);
 };
 
-// Evènement au clique sur le bouton modifier de la galerie, appel de la fonction modalGallery qui contient tout le contenu de la modale
+/**
+ * @description Event when clicking on the modify button of the main gallery: call of the modalGallery function which contains all the content of the modal window
+ */
 modifierBtn.addEventListener("click", generateModalGallery);

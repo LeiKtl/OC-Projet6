@@ -1,4 +1,6 @@
-//Fonction qui lorsque l'utilisateur est connecté change le bouton "login" en "logout", et lui permet de se deconnecter en cliquant dessus + ajout des éléments du mode édition (connecté)
+/**
+ * @description When the user is connected change the "login" button in "logout", allows him to disconnect by clicking on it and adds edit mode elements
+ */
 function editionMode() {
     const editionMode = document.querySelector(".editionMode");
     editionMode.style.display = "flex";
@@ -14,13 +16,15 @@ function editionMode() {
         
     const btnLog = document.querySelector(".btnLog");
     btnLog.innerHTML = "logout";
-        //Lorsque l'on clique sur logout cela déconnecte l'utilisateur
+
     btnLog.addEventListener("click", function () {
         localStorage.removeItem("token");
     });
 };
 
-//Création de la fonction qui récupère les travaux de l'architecte
+/**
+ * @description Function that retrieves the architect's work
+ */
 function mainGallery(){
     fetch("http://localhost:5678/api/works")
     .then(data => data.json())
@@ -48,12 +52,14 @@ function mainGallery(){
     });
 };
 
-// Création de la fonction pour gérer la galerie selon le bouton categorie selectionné
+/**
+ * @description Function to create the button filters of the gallery and manage the appearance of images in the gallery according to the chosen filter
+ */
 function filters() {
     fetch("http://localhost:5678/api/categories")
     .then(data => data.json())
     .then(categories => {
-        //Création du bouton "tous"
+        
         const filters = document.querySelector(".filters");
         const btnAll = document.createElement("button");
         btnAll.classList.add("filtersBtn", "filtersBtnSelected");
@@ -61,7 +67,6 @@ function filters() {
         btnAll.setAttribute("data-id", "0");
         filters.appendChild(btnAll);
         
-        //Création des autres boutons de catégorie récupérés dans l'API
         categories.forEach((category) => {
             const btnCategory = document.createElement("button");
             btnCategory.classList.add("filtersBtn");
@@ -70,32 +75,40 @@ function filters() {
             filters.appendChild(btnCategory)
         })
 
-        //Ajout de l'évènement au clique des boutons
-        const allBtn = document.querySelectorAll("button")
-        allBtn.forEach((buttons) => {
-            buttons.addEventListener("click", function() {
-                //Ajout du CSS du bouton selectionné
-                const btnDisabled = document.querySelector(".filtersBtnSelected");
-                btnDisabled.classList.remove("filtersBtnSelected");
-                buttons.classList.add("filtersBtnSelected")
-
-                //Récupération des travaux de la galerie (<figure>) et ajout d'une condition pour l'affichage des travaux selon le bouton selectionné
-                const allFigures = document.querySelectorAll("figure")
-                allFigures.forEach((figure) => {
-                    if (figure.dataset.id === buttons.dataset.id || buttons.dataset.id === "0" || figure.dataset.id === "0") {
-                        figure.style.display = "block";
-                    } else {
-                        figure.style.display = "none";
-                    }
-                });
-            });
-        });
+        buttonSelected();
     })
     .catch(error => {
         console.error("Un problème est survenu lors de la récupération des données:", error);
     });
 };
 
+/**
+ * @description Click event on the category buttons that retrieves works from the gallery and add a condition for displaying works according to the selected button
+ */
+function buttonSelected() {
+    const allBtn = document.querySelectorAll("button")
+    allBtn.forEach((buttons) => {
+        buttons.addEventListener("click", function() {
+            
+            const btnDisabled = document.querySelector(".filtersBtnSelected");
+            btnDisabled.classList.remove("filtersBtnSelected");
+            buttons.classList.add("filtersBtnSelected")
+
+            const allFigures = document.querySelectorAll("figure")
+            allFigures.forEach((figure) => {
+                if (figure.dataset.id === buttons.dataset.id || buttons.dataset.id === "0" || figure.dataset.id === "0") {
+                    figure.style.display = "block";
+                } else {
+                    figure.style.display = "none";
+                }
+            });
+        });
+    });
+};
+
+/**
+ * @description manage the appearence of the website on whether the user is logged in or not 
+ */
 function connected () {
     const userConnected = localStorage.getItem("token");
     if (userConnected) {
