@@ -187,12 +187,10 @@ function picturePreview() {
 function verifyInputForm(formModal, addFile, pictureTitle, categoryName, submitForm) {
     formModal.addEventListener("change", function() {
         if (addFile.files[0] && pictureTitle.value != "" && categoryName.value != "") {
-            submitForm.disabled = false;
             submitForm.classList.remove("btnDisabled");
         } else { 
-            submitForm.disabled = true;
             submitForm.classList.add("btnDisabled");
-        }
+        };
     });
 };
 
