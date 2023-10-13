@@ -7,8 +7,8 @@ function logIn () {
     loginForm.addEventListener("submit", function (event) {
         event.preventDefault(); 
         
-        const emailValue = document.getElementById("email").value;
-        const passwordValue = document.getElementById("password").value;
+        const emailValue = /** @type {HTMLInputElement} */ (document.getElementById("email")).value;
+        const passwordValue = /** @type {HTMLInputElement} */ (document.getElementById("password")).value;
         const errorMessage = document.querySelector(".errorMessage");
 
         const userIdentifier = {

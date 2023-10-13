@@ -1,4 +1,4 @@
-const modal = document.querySelector(".modal");
+const modal = /** @type {HTMLElement} */ (document.querySelector(".modal"));
 const modifierBtn = document.querySelector(".modifierBtn");
 const token = localStorage.getItem("token");
 
@@ -37,7 +37,7 @@ function recuperationModalGallery () {
     .then(worksGallery => {
         const gallery = document.querySelector(".miniGallery");
         gallery.innerHTML = "";
-        for (i = 0 ; i < worksGallery.length ; i++) {
+        for (let i = 0 ; i < worksGallery.length ; i++) {
             const figureModal = document.createElement("figure");
             figureModal.classList.add("figureModal")
             figureModal.setAttribute("data-id", worksGallery[i].id);
@@ -76,7 +76,7 @@ function deletePicture ( figureModal) {
     .then(Response => {
         if (Response.ok) {
             recuperationModalGallery();
-            mainGallery()
+            mainGallery();
         } else {
             window.alert("Une erreur s'est produite, le projet n'a pas été supprimé")
         };
@@ -166,10 +166,10 @@ function picturePreview() {
     <input id = "addPictureFile" type = "file"  name = "addPictureFile" class = "pictureBtnHidden addFile" accept = ".jpg, .png">
     `;
 
-    const formPicturePreview = document.querySelector(".formPicturePreview");
+    const formPicturePreview = /** @type {HTMLImageElement} */ (document.querySelector(".formPicturePreview"));
     formPicturePreview.src = URL.createObjectURL(this.files[0]); 
 
-    const pictureTitle = document.querySelector(".pictureTitle");
+    const pictureTitle = /** @type {HTMLInputElement} */ (document.querySelector(".pictureTitle"));
     formPicturePreview.alt = pictureTitle.value;
 
     const addFile = document.querySelector(".addFile");
@@ -239,7 +239,7 @@ function sendNewProject(formModal, pictureTitle, addFile, categoryName) {
 function closeModal (event) {
     event.preventDefault();
     modal.style.display = "none";
-    modal.setAttribute("aria-hidden", true);
+    modal.ariaHidden = "true";
     modal.removeAttribute("aria-modal");
     modal.removeEventListener("click", closeModal);
     modal.querySelector(".closeModal").removeEventListener("click", closeModal);
@@ -262,7 +262,7 @@ function generateModalGallery (event) {
     modal.innerHTML = "";
     modal.style.display = "flex";
     modal.removeAttribute("aria-hidden");
-    modal.setAttribute("aria-modal", true);
+    modal.ariaModal = "true";
     modalGalleryElements();
 };
 

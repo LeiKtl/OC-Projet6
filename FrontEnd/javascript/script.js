@@ -2,16 +2,16 @@
  * @description When the user is connected change the "login" button in "logout", allows him to disconnect by clicking on it and adds edit mode elements
  */
 function editionMode() {
-    const editionMode = document.querySelector(".editionMode");
+    const editionMode = /** @type {HTMLElement} */ (document.querySelector(".editionMode"));
     editionMode.style.display = "flex";
 
-    const editionGallery = document.querySelector(".editionGallery");
+    const editionGallery = /** @type {HTMLElement} */ (document.querySelector(".editionGallery"));
     editionGallery.style.marginBottom = "80px";
 
-    const modifierBtn = document.querySelector(".modifierBtn");
+    const modifierBtn = /** @type {HTMLElement} */ (document.querySelector(".modifierBtn"));
     modifierBtn.style.display = "block";
 
-    const filters = document.querySelector(".filters");
+    const filters = /** @type {HTMLElement} */ (document.querySelector(".filters"));
     filters.style.display = "none";
         
     const btnLog = document.querySelector(".btnLog");
@@ -31,7 +31,7 @@ function mainGallery(){
     .then(works => {
         const gallery = document.querySelector(".gallery");
         gallery.innerHTML = "";
-        for (i = 0 ; i < works.length ; i++) {
+        for (let i = 0 ; i < works.length ; i++) {
             const figure = document.createElement("figure");
             figure.setAttribute("data-id", works[i].categoryId);
 
