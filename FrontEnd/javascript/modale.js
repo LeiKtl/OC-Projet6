@@ -122,14 +122,14 @@ function modalAddPicture (event) {
 
     categoriesOptions(modalAddPictureForm);
 
-    const formModal = modalAddPictureForm.querySelector(".formModal");
-    const pictureTitle = modalAddPictureForm.querySelector(".pictureTitle");
-    const addFile = modalAddPictureForm.querySelector(".addFile");
-    const categoryName = modalAddPictureForm.querySelector(".categoryName");
-    const submitForm = modalAddPictureForm.querySelector(".submitBtn");
+    const formModal = /** @type {HTMLFormElement} */ (modalAddPictureForm.querySelector(".formModal"));
+    const pictureTitle = /** @type {HTMLInputElement} */ (modalAddPictureForm.querySelector(".pictureTitle"));
+    const addFile = /** @type {HTMLInputElement} */ (modalAddPictureForm.querySelector(".addFile"));
+    const categoryName = /** @type {HTMLSelectElement} */ (modalAddPictureForm.querySelector(".categoryName"));
+    const submitForm = /** @type {HTMLButtonElement} */ (modalAddPictureForm.querySelector(".submitBtn"));
 
-    verifyInputForm(formModal, addFile, pictureTitle, categoryName, submitForm);
-    sendNewProject(formModal, pictureTitle,addFile,categoryName);
+    verifyInputForm({formModal, addFile, pictureTitle, categoryName, submitForm});
+    sendNewProject({formModal, pictureTitle,addFile,categoryName});
 
     modal.appendChild(modalAddPictureForm);
 };
@@ -178,13 +178,14 @@ function picturePreview() {
 
 /**
  * @description Checks that all fields are filled, if this is the case changes the appearance of the form's submit button, otherwise it remains unclickable
- * @param {*} formModal - Name of the variable to add the event "change"
- * @param {*} addFile - Name of the variable that contains the <input type="file">
- * @param {*} pictureTitle - Name of the variable that contains the name of the picture
- * @param {*} categoryName - Name of the variable that contains the <select> for categories
- * @param {*} submitForm  - Name of the variable that contains the submit button of the adding picture form
+ * @param {object} settings - list of arguments
+ * @param {HTMLFormElement} settings.formModal - Name of the variable to add the event "change"
+ * @param {HTMLInputElement} settings.addFile - Name of the variable that contains the <input type="file">
+ * @param {HTMLInputElement} settings.pictureTitle - Name of the variable that contains the name of the picture
+ * @param {HTMLSelectElement} settings.categoryName - Name of the variable that contains the <select> for categories
+ * @param {HTMLButtonElement} settings.submitForm  - Name of the variable that contains the submit button of the adding picture form
  */
-function verifyInputForm(formModal, addFile, pictureTitle, categoryName, submitForm) {
+function verifyInputForm({formModal, addFile, pictureTitle, categoryName, submitForm}) {
     formModal.addEventListener("change", function() {
         if (addFile.files[0] && pictureTitle.value != "" && categoryName.value != "") {
             submitForm.classList.remove("btnDisabled");
@@ -196,12 +197,13 @@ function verifyInputForm(formModal, addFile, pictureTitle, categoryName, submitF
 
 /**
  * @description Function for adding a new project, with call to the API and redirects to the gallery modal with the new project after submit
- * @param {*} formModal - Name of the variable to add the event "submit"
- * @param {*} pictureTitle - Name of the variable that contains the name of the picture
- * @param {*} addFile - Name of the variable that contains the <input type="file">
- * @param {*} categoryName - Name of the variable that contains the <select> for categories
+ * @param {object} settings - list of arguments
+ * @param {HTMLFormElement} settings.formModal - Name of the variable to add the event "submit"
+ * @param {HTMLInputElement} settings.pictureTitle - Name of the variable that contains the name of the picture
+ * @param {HTMLInputElement} settings.addFile - Name of the variable that contains the <input type="file">
+ * @param {HTMLSelectElement} settings.categoryName - Name of the variable that contains the <select> for categories
  */
-function sendNewProject(formModal, pictureTitle, addFile, categoryName) {
+function sendNewProject({formModal, pictureTitle, addFile, categoryName}) {
 
     formModal.addEventListener("submit", function (event) {
         event.preventDefault();
